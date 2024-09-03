@@ -6,6 +6,7 @@ const btn = document.querySelector("form button");
 const fromCurr = document.querySelector(".from select");
 const toCurr = document.querySelector(".to select");
 const msg = document.querySelector(".msg");
+const error = document.querySelector(".error");  // Add this line
 const swapBtn = document.querySelector(".fa-arrow-right-arrow-left");
 
 for (let select of dropdowns) {
@@ -29,9 +30,14 @@ for (let select of dropdowns) {
 const updateExchangeRate = async () => {
   let amount = document.querySelector(".amount input");
   let amtVal = amount.value;
-  if (amtVal === "" || amtVal < 1) {
-    amtVal = 1;
-    amount.value = "1";
+  
+  // Reset error message
+  error.innerText = "";
+
+  if (isNaN(amtVal) || amtVal === "" || amtVal <= 0) {
+    error.innerText = "Please enter a valid number greater than 0.";
+    msg.innerText = "";
+    return;
   }
 
   const URL = `${BASE_URL}/${fromCurr.value.toLowerCase()}.json`;
